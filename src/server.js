@@ -7,24 +7,6 @@ const app = express();
 const logger = morgan("dev");
 app.use(logger);
 
-const golbalRouter = express.Router();
-
-const handleHome = (req, res) => res.send("Home");
-
-golbalRouter.get("/", handleHome);
-
-const userRouter = express.Router();
-
-const handleEditUser = (req, res) => res.send("Edit User");
-
-userRouter.get("/edit", handleEditUser);
-
-const videoRouter = express.Router();
-
-const handleWatchVideo = (req, res) => res.send("Watch Video");
-
-videoRouter.get("/watch", handleWatchVideo);
-
 app.use("/", golbalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
