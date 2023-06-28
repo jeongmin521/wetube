@@ -1,7 +1,11 @@
 import express from "express";
+import { edit, remove, logout, see } from "../controllers/userController";
 
-const videoRouter = express.Router();
+const userRouter = express.Router();
 
-const handleWatchVideo = (req, res) => res.send("watch videeo");
+userRouter.get("/logout", logout);
+userRouter.get("/edit", edit);
+userRouter.get("/remove", remove);
+userRouter.get(":id", see);
 
-videoRouter.get("/watch", handleWatchVideo);
+export default userRouter;
