@@ -1,9 +1,31 @@
-const fakeUser ={
-    username: "Jeongmin",
-    loggedIn: true,
+export const trending = (req, res) => {
+    const videos = [{
+        title: "First Video",
+        rating: 5,
+        comments:2,
+        createdAt:"2 minutes ago",
+        views:59,
+        id:1,
+    },
+    {
+        title: "Second Video",
+        rating: 3,
+        comments:5,
+        createdAt:"10 minutes ago",
+        views:80,
+        id:1,
+    },
+    {
+        title: "Third Video",
+        rating: 1,
+        comments:20,
+        createdAt:"50 minutes ago",
+        views:100,
+        id:1,
+    },
+];
+    return res.render("home", { pageTitle:"home", videos });
 };
-    
-export const trending = (req, res) => res.render("home", { pageTitle:"home", fakeUser: fakeUser });
 
 export const see = (req, res) => res.render("watch");
 export const edit = (req, res) => res.render("edit");
