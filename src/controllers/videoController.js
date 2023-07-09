@@ -23,12 +23,23 @@ export const getEdit = async (req, res) => {
     return res.render("edit", { pageTitle: `Edit: ${video.title}`, video });
 };
 
-export const postEdit = (req, res) => {
-    const { id } = req.params; //req.param에서 id를 얻고
-    const { title } = req.body; //form 에서 오는 body에서 title얻고
-    videos[id-1].title = title; //업데이트하기
-    return res.redirect(`/videos/${id}`);
-}; //변경사항을 저장
+export const postEdit = async (req, res) => {
+    const { id } = req.params;
+    const { title, description, hashtags } = req.body;
+    const video = await Video.exists({ _id: id });
+    if(!video){
+        return res.render("404", { pageTitle: "Video not found." });
+    }
+    await Video.findByIdAndUpdate(id, {
+        title,
+        description,
+        hashtags: hashtags
+            .split(",")
+            .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+
+    });
+    return res.render(`/videos/${id}`);
+};
 
 export const getUpload = (req, res) => {
     return res.render("upload", {pageTitle: "Upload Video"});
