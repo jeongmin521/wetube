@@ -1,4 +1,5 @@
 import User from "../models/User";
+import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" } );
 
@@ -40,11 +41,19 @@ res.render("login", { pageTitle: "Login" });
 
 export const postLogin = async(req, res) => {
     const { username, password } = req.body;
-    const exists = await User.exists({ username });
-    if(!exists){
+    const pageTitle = "Login";
+    const user = await User.findOne({ username });
+    if(!user){
         return res.status(400).render("login", { 
-            pageTitle: "Login",
+            pageTitle,
             errorMessage: " An account with this username does not exists.",
+        });
+    }
+    const ok = await bcrypt.compare(password, user.password);
+    if(!ok){
+        return res.status(400).render("login", { 
+            pageTitle,
+            errorMessage: " wrong password.",
         });
     }
     res.end();
