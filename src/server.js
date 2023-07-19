@@ -21,6 +21,13 @@ app.use (
     })
 );
 
+app.use((req, res, mext) => {
+    req.sessionStore.all((error, sessions) => {
+        console.log(sessions);
+        next();
+    });
+})
+
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
