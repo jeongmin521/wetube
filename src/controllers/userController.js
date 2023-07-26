@@ -58,7 +58,7 @@ export const postLogin = async(req, res) => {
     }
     req.session.loggedIn = true;
     req.session.user = user; //세션에 정보 추가
-    return res.redirecrt("/");
+    return res.redirect("/");
 }
 
 export const edit = (req, res) => res.send("Edit User");

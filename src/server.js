@@ -17,7 +17,7 @@ app.use (
     session({
     secret:"Hello",
     resave: true,
-    //saveUninitialized: true,
+    saveUninitialized: true,
     })
 );
 
