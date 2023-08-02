@@ -83,6 +83,7 @@ export const finishGithubLogin = async(req, res) => {
     };
     const params = new URLSearchParams(config).toString();
     const finalUrl=`${baseUrl}?${params}`;
+
     const tokenRequest = await (
         await fetch(finalUrl, {
             method:"POST",
@@ -109,8 +110,11 @@ export const finishGithubLogin = async(req, res) => {
             },
         })
     ).json();
-    console.log(emailData);
-    } else {
+    const email = emailData.find(
+        (email) => email.primary === true && email.verified === true);
+        if(!email){
+            return res.redirect("/login");
+        } else {
         return res.redirect("/login");
     }
 };
