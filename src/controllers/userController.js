@@ -2,7 +2,7 @@ import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
-export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" } );
+export const getJoin = (req, res) => res.render("users/join", { pageTitle: "Join" } );
 
 export const postJoin = async(req, res) => {
     const { name, username, email, password, password2, location } = req.body;
@@ -38,7 +38,7 @@ export const postJoin = async(req, res) => {
 };
 
 export const getLogin = (req, res) => 
-res.render("login", { pageTitle: "Login" });
+res.render("users/login", { pageTitle: "Login" });
 
 export const postLogin = async(req, res) => {
     const { username, password } = req.body;
@@ -140,7 +140,7 @@ export const logout = (req, res) => {
 };
 
 export const getEdit = (req, res) => {
-    return res.render("edit-profile", { pageTitle: " Edit profile" })
+    return res.render("users/edit-profile", { pageTitle: " Edit profile" })
 }
 
 export const postEdit = async (req, res) => {
@@ -160,6 +160,41 @@ export const postEdit = async (req, res) => {
     );
     req.session.user = updateUser;
     return res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+    if (req.session.user.socialOnly === true ){
+        return res.redirect("/");
+    }
+    return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = async (req, res) => {
+    const{
+        session: {
+            user: { _id, password },
+        },
+        body :{ oldPassword, newPassword, newPasswordConfirmation },
+    } = req;
+    const ok = await bcrypt.compare(oldPassword, password);
+    if(!ok){
+        return res.status(400).render ("users/change-password",{ 
+            pageTitle: "Change Password", 
+            errorMessage: "The current password is incorrect",
+     });
+    }
+    if(newPassword !== newPasswordConfirmation){
+        return res.status(400).render ("users/change-password",{ 
+            pageTitle: "Change Password", 
+            errorMessage: "The password does not match the confirmation",
+     });
+    }
+    const user = await User.findById(_id);
+    console.log(user.password);
+    user.password = newPassword;
+    await user.save();
+    console.log(user.password);
+    return res.redirect("/");
 };
 
 export const see = (req, res) => res.send("See User");
