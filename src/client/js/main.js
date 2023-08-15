@@ -1,2 +1,2 @@
-import "../scss/styles.scss"
-alert("hi");
+import "../scss/styles.scss";
+console.log("main");
