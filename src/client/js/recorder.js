@@ -16,8 +16,7 @@ const handleDownload = () => {
 const handleStop = () => {
     startBtn.innerText = "Download Recording";
     startBtn.removeEventListener("click", handleStop);
-    startBtn.addEventListener("click", handleStart);
-    recorder.stop();
+    startBtn.addEventListener("click", handleDownload);
 };
 
 const handleStart = () => {
