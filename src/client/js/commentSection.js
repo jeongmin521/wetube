@@ -2,23 +2,22 @@ const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 
 const handleSubmit = (event) => {
+    const textarea = form.querySelector("textarea");
     event.preventDefault();
-    const textarea = querySelector("textarea");
+    const videoId = videoContainer.dataset.id;
     const text = textarea.value;
-    const videoId= videoContainer.dataset.id;
-    if(text ===""){
+    if(textarea===""){
         return;
     }
-    fetch(`/api/videos/${videoId}/comment`, {
-        method: "POST",
-        headers: {
+    fetch(`/api/videos/${videoId}/comment`, 
+	    {method : "POST", 
+         headers: {
             "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
-    });
-    textarea.value = "";
-};
+          },
+	     body : JSON.stringify({text})
+	    });
+}
 
-if(form){ 
+if(form){
     form.addEventListener("submit", handleSubmit);
 }
