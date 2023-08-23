@@ -1,4 +1,4 @@
-const videoContainer = document.getElementById("videoContianer");
+const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 
 const handleSubmit = (event) => {
